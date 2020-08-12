@@ -1,5 +1,7 @@
 package com.bloyot.recordhomeworkcommon;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Objects;
 
@@ -10,6 +12,10 @@ import java.util.Objects;
  * but for demonstrative purposes I will leave it out since it requires a plugin to work.
  */
 public class Record {
+    // the expected date format for the record
+    public static final String DATE_FORMAT_STRING = "MM/dd/yyyy";
+    // assumes the default system time zone for simplicity
+    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT_STRING);
 
     /**
      * The persons last name
@@ -101,5 +107,11 @@ public class Record {
     @Override
     public int hashCode() {
         return Objects.hash(lastName, firstName, gender, favoriteColor, dateOfBirth);
+    }
+
+    @Override
+    public String toString() {
+        // display format was not specified as far as I can tell, so just always output in csv
+        return lastName + "," + firstName + "," + gender + "," + favoriteColor + "," + DATE_FORMAT.format(Date.from(dateOfBirth));
     }
 }
