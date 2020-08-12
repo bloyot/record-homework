@@ -9,12 +9,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
 @SpringBootApplication
 public class RecordHomeworkCliApplication implements ApplicationRunner {
+
+    public static final int EXIT_MISSING_ARGS = 1;
+    public static final int EXIT_MISSING_INPUT_FILE = 2;
+    public static final int EXIT_INVALID_SORT = 3;
 
     public static void main(String[] args) {
         SpringApplication.run(RecordHomeworkCliApplication.class, args);
@@ -30,7 +33,7 @@ public class RecordHomeworkCliApplication implements ApplicationRunner {
                 !args.containsOption("input-psv") ||
                 !args.containsOption("sort-type")) {
 
-            exit();
+            exitWithError(EXIT_MISSING_ARGS);
         }
 
         // parse our 4 required input values, the above check validates we have at least on for each option value, and if
@@ -47,9 +50,9 @@ public class RecordHomeworkCliApplication implements ApplicationRunner {
 
         // parse records and join into a single list
         List<Record> records = new ArrayList<>();
-        records.addAll(RecordParser.parse(Paths.get(csvInput), ","));
-        records.addAll(RecordParser.parse(Paths.get(ssvInput), " "));
-        records.addAll(RecordParser.parse(Paths.get(psvInput), "|"));
+        records.addAll(RecordParser.parseFile(Paths.get(csvInput), ","));
+        records.addAll(RecordParser.parseFile(Paths.get(ssvInput), " "));
+        records.addAll(RecordParser.parseFile(Paths.get(psvInput), "|"));
 
         // sort by sort type and display the result
         records.stream().sorted(getSortComparator(sortType)).forEach(System.out::println);
@@ -75,27 +78,27 @@ public class RecordHomeworkCliApplication implements ApplicationRunner {
     private void validateInputOptions(String csvInput, String ssvInput, String psvInput, SortType sortType) {
         if (sortType == null) {
             System.out.println("Sort type must be one of [gender|birth_date|last_name]");
-            exit();
+            exitWithError(EXIT_INVALID_SORT);
         }
 
         if (!Paths.get(csvInput).toFile().exists()) {
             System.out.println("CSV input file does not exist!");
-            exit();
+            exitWithError(EXIT_MISSING_INPUT_FILE);
         }
 
         if (!Paths.get(ssvInput).toFile().exists()) {
             System.out.println("SSV input file does not exist!");
-            exit();
+            exitWithError(EXIT_MISSING_INPUT_FILE);
         }
 
         if (!Paths.get(psvInput).toFile().exists()) {
             System.out.println("PSV input file does not exist!");
-            exit();
+            exitWithError(EXIT_MISSING_INPUT_FILE);
         }
     }
 
-    private void exit() {
+    protected void exitWithError(int statusCode) {
         System.out.println("Usage: java -jar <jar> --input-csv=<path to csv file> --input-psv=<path to psv file> --input-ssv=<path to ssv file> --sort-type=[gender|birth_date|last_name]");
-        System.exit(1);
+        System.exit(statusCode);
     }
 }

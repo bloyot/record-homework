@@ -42,15 +42,14 @@ public class RecordController {
 
         // if no delimiter provided or not one of the valid options
         if (StringUtils.isEmpty(recordCommand.getDelimiter()) || !VALID_DELIMITERS.contains(recordCommand.getDelimiter())) {
-            return badRequest("Invalid delimiter: " + recordCommand.getDelimiter());
+            return badRequest("Invalid delimiter");
         }
 
         // parse and add to the record list
         try {
-            records.add(RecordParser.parseRecord(recordCommand.getData(), recordCommand.getDelimiter()));
+            records.add(RecordParser.parseLine(recordCommand.getData(), recordCommand.getDelimiter()));
         } catch (RecordParseException e) {
-            return badRequest("Unable to parse provided record using delimiter " +
-                    recordCommand.getDelimiter() + ": " + recordCommand.getData());
+            return badRequest("Unable to parse provided record data");
         }
 
         // indicates successful create, but nothing to explicitly return
@@ -59,7 +58,7 @@ public class RecordController {
 
     /**
      * Returns the records sorted by gender.
-     * @param sortOrder whether to sort int ascending or descending order, defaults to asc
+     * @param sortOrder whether to sort in ascending or descending order, defaults to asc
      * @return A list of {@link Record}
      */
     @GetMapping("/gender")
@@ -69,7 +68,7 @@ public class RecordController {
 
     /**
      * Returns the records sorted by birth date.
-     * @param sortOrder whether to sort int ascending or descending order, defaults to asc
+     * @param sortOrder whether to sort in ascending or descending order, defaults to asc
      * @return A list of {@link Record}
      */
     @GetMapping("/birthdate")
@@ -79,7 +78,7 @@ public class RecordController {
 
     /**
      * Returns the records sorted by lastName.
-     * @param sortOrder whether to sort int ascending or descending order, defaults to asc
+     * @param sortOrder whether to sort in ascending or descending order, defaults to asc
      * @return A list of {@link Record}
      */
     @GetMapping("/name")
@@ -87,8 +86,11 @@ public class RecordController {
         return getRecords(Comparator.comparing(Record::getLastName), sortOrder);
     }
 
+    /**
+     * Helper method to return a bad request with a json message body describing the error
+     */
     private ResponseEntity badRequest(String message) {
-        return ResponseEntity.badRequest().body("{\"status\": 400, \"response\": " + message);
+        return ResponseEntity.badRequest().body("{\"status\": \"400\", \"response\": \"" + message + "\"}");
     }
 
     /**
@@ -102,5 +104,4 @@ public class RecordController {
 
         return records.stream().sorted(comparator).collect(Collectors.toList());
     }
-
 }

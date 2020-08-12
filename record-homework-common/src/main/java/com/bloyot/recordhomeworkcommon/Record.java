@@ -109,6 +109,6 @@ public class Record {
     @Override
     public String toString() {
         // display format was not specified as far as I can tell, so just always output in csv
-        return lastName + "," + firstName + "," + gender + "," + favoriteColor + "," + DATE_TIME_FORMATTER.format(dateOfBirth);
+        return lastName + "," + firstName + "," + gender.toString().toLowerCase() + "," + favoriteColor + "," + DATE_TIME_FORMATTER.format(dateOfBirth);
     }
 }

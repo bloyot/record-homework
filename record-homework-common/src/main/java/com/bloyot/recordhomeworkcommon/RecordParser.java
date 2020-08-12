@@ -25,14 +25,23 @@ public class RecordParser {
      * @param filePath - the input file path
      * @param delimiter - the delimiter to parse with (typically "," "|" or " ")
      * @return The list of records
-     * @throws IOException if unable to read the fiel
+     * @throws IOException if unable to read the file
      * @throws RecordParseException - if unable to parse any line of the files
      */
-    public static List<Record> parse(Path filePath, String delimiter) throws IOException, RecordParseException {
+    public static List<Record> parseFile(Path filePath, String delimiter) throws IOException, RecordParseException {
+        // input validations
+        if (filePath == null || !filePath.toFile().exists()) {
+            throw new RecordParseException("Invalid file path");
+        }
+        if (!VALID_DELIMITERS.contains(delimiter)) {
+            throw new RecordParseException("Invalid delimiter \"" + delimiter + "\" provided");
+        }
+
+        // read each line, parse it, and add it to the record list
         try (BufferedReader reader = Files.newBufferedReader(filePath)) {
             List<Record> records = new ArrayList<>();
             while (reader.ready()) {
-                records.add(parseRecord(reader.readLine(), delimiter));
+                records.add(parseLine(reader.readLine(), delimiter));
             }
             return records;
         }
@@ -45,8 +54,17 @@ public class RecordParser {
      * @return an {@link Record} parsed from the string
      * @throws RecordParseException - if unable to parse for some reason
      */
-    public static Record parseRecord(String line, String delimiter) throws RecordParseException {
-        // handle the annonying edge case because split treats pipe as a regex character
+    public static Record parseLine(String line, String delimiter) throws RecordParseException {
+        // input validations
+        if (line == null || line.isEmpty()) {
+            throw new RecordParseException("Invalid record line \"" + line + "\" provided for parsing");
+        }
+
+        if (!VALID_DELIMITERS.contains(delimiter)) {
+            throw new RecordParseException("Invalid delimiter \"" + delimiter + "\" provided");
+        }
+
+        // handle the annoying edge case because split treats pipe as a regex character
         String splitDelimiter = delimiter;
         if ("|".equals(splitDelimiter)) {
             splitDelimiter = "\\|";
