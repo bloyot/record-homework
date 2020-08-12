@@ -1,8 +1,7 @@
 package com.bloyot.recordhomeworkcommon;
 
-import java.sql.Date;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 /**
@@ -14,8 +13,7 @@ import java.util.Objects;
 public class Record {
     // the expected date format for the record
     public static final String DATE_FORMAT_STRING = "MM/dd/yyyy";
-    // assumes the default system time zone for simplicity
-    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT_STRING);
+    public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(DATE_FORMAT_STRING);
 
     /**
      * The persons last name
@@ -39,12 +37,11 @@ public class Record {
     private String favoriteColor;
 
     /**
-     * The date of birth for the person in the record. I prefer using Instant to represent times inside the actual code since they
-     * are timezone and format agnostic, and those concerns are best dealt with at the point of reading and writing.
+     * The date of birth for the person in the record. Stored as a local date since we don't have time or timezone information.
      */
-    private Instant dateOfBirth;
+    private LocalDate dateOfBirth;
 
-    public Record(String lastName, String firstName, Gender gender, String favoriteColor, Instant dateOfBirth) {
+    public Record(String lastName, String firstName, Gender gender, String favoriteColor, LocalDate dateOfBirth) {
         this.lastName = lastName;
         this.firstName = firstName;
         this.gender = gender;
@@ -84,11 +81,11 @@ public class Record {
         this.favoriteColor = favoriteColor;
     }
 
-    public Instant getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Instant dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -112,6 +109,6 @@ public class Record {
     @Override
     public String toString() {
         // display format was not specified as far as I can tell, so just always output in csv
-        return lastName + "," + firstName + "," + gender + "," + favoriteColor + "," + DATE_FORMAT.format(Date.from(dateOfBirth));
+        return lastName + "," + firstName + "," + gender + "," + favoriteColor + "," + DATE_TIME_FORMATTER.format(dateOfBirth);
     }
 }

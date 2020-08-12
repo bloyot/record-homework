@@ -4,8 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.text.ParseException;
-import java.time.Instant;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -38,7 +38,6 @@ public class RecordParser {
         }
     }
 
-
     /**
      * Parse an individual line of the input file using the delimiter. Throws a record parse exception if unable to parse.
      * @param line the specific line to parse
@@ -68,10 +67,10 @@ public class RecordParser {
         }
         
         String favoriteColor = split[3];
-        Instant dateOfBirth;
+        LocalDate dateOfBirth;
         try {
-            dateOfBirth = Record.DATE_FORMAT.parse(split[4]).toInstant();
-        } catch (ParseException e) {
+            dateOfBirth = LocalDate.parse(split[4], Record.DATE_TIME_FORMATTER);
+        } catch (DateTimeParseException e) {
             throw new RecordParseException("Invalid date format " + split[4] + " while parsing record. Expected " + Record.DATE_FORMAT_STRING, e);
         }
 
