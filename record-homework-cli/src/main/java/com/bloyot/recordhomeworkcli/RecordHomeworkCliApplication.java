@@ -49,7 +49,7 @@ public class RecordHomeworkCliApplication implements ApplicationRunner {
         List<Record> records = new ArrayList<>();
         records.addAll(RecordParser.parse(Paths.get(csvInput), ","));
         records.addAll(RecordParser.parse(Paths.get(ssvInput), " "));
-        records.addAll(RecordParser.parse(Paths.get(psvInput), "\\|"));
+        records.addAll(RecordParser.parse(Paths.get(psvInput), "|"));
 
         // sort by sort type and display the result
         records.stream().sorted(getSortComparator(sortType)).forEach(System.out::println);

@@ -8,7 +8,6 @@ public class RecordHomeworkApiApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(RecordHomeworkApiApplication.class, args);
-		System.out.println("I did it!");
 	}
 
 }

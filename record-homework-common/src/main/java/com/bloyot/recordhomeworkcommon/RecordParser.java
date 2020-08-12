@@ -8,6 +8,7 @@ import java.text.ParseException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Parses records from csv, ssv, or psv input files. Because for our use case we know there will be no need to escape commas, pipes, or spaces
@@ -15,6 +16,9 @@ import java.util.List;
  * handle the parsing in a more robust way.
  */
 public class RecordParser {
+
+    public static final Set<String> VALID_DELIMITERS = Set.of(",", " ", "|");
+
     /**
      * Parses a set of records from an input file, using the provided delimiter. Returns a list of {@link Record} objects,
      * or throws an exception if it is unable to read or parse the file.
@@ -34,11 +38,21 @@ public class RecordParser {
         }
     }
 
+
     /**
      * Parse an individual line of the input file using the delimiter. Throws a record parse exception if unable to parse.
+     * @param line the specific line to parse
+     * @param delimiter  the delimiter to use
+     * @return an {@link Record} parsed from the string
+     * @throws RecordParseException - if unable to parse for some reason
      */
-    private static Record parseRecord(String line, String delimiter) throws RecordParseException {
-        String[] split = line.split(delimiter);
+    public static Record parseRecord(String line, String delimiter) throws RecordParseException {
+        // handle the annonying edge case because split treats pipe as a regex character
+        String splitDelimiter = delimiter;
+        if ("|".equals(splitDelimiter)) {
+            splitDelimiter = "\\|";
+        }
+        String[] split = line.split(splitDelimiter);
 
         // too many or too few fields, something is wrong
         if (split.length != 5) {
