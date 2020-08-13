@@ -4,8 +4,6 @@ This is a Java project, using the Spring Boot framework, which consists of three
 - `record-homework-cli` this is a cli tool which allows joining three input files in different formats, and sorting the output. 
 - `record-homework-common` this is a library for shared code between the api and cli, primarily the parsing logic, and the core `Record` object
 
-*Note: this project requires java 14 to run.*
-
 # Build
 To build the project, from the root directory run:
 ```shell script
@@ -37,7 +35,7 @@ java -jar record-homework-cli/target/record-homework-cli-1.0-SNAPSHOT.jar \
 ## Api
 To start the api, simply run:
 ```shell script
-java -jar record-homework-cli/target/record-homework-api-1.0-SNAPSHOT.jar
+java -jar record-homework-api/target/record-homework-api-1.0-SNAPSHOT.jar
 ```
 
 This starts the api using port `8080`, and exposes the following endpoints:
@@ -48,7 +46,9 @@ This starts the api using port `8080`, and exposes the following endpoints:
 	"data": "Aadil,Knight,female,red,04/03/2003"
 }
 ```
-The data is the actual record (same as in the files processed by the command line), and the delimiter field specifies the delimiter to be used when parsing. Records added are stored only in memory in the api.
+The data is the actual record in one of the 3 specified formats (same as the files processed by the command line), 
+and the delimiter field specifies the delimiter to be used when parsing. Records added are stored only in 
+memory in the api.
   
 * `GET /records/name` - returns an array of records, sorted by last name ascending. You can provide `sortOrder=desc` as a query param to sort in the opposite order. 
 * `GET /records/birthdate` - returns an array of records, sorted by birthdate ascending. You can provide `sortOrder=desc` as a query param to sort in the opposite order. 

@@ -6,9 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Parses records from csv, ssv, or psv input files. Because for our use case we know there will be no need to escape commas, pipes, or spaces
@@ -17,7 +15,7 @@ import java.util.Set;
  */
 public class RecordParser {
 
-    public static final Set<String> VALID_DELIMITERS = Set.of(",", " ", "|");
+    public static final Set<String> VALID_DELIMITERS = new HashSet<>(Arrays.asList(",", " ", "|"));
 
     /**
      * Parses a set of records from an input file, using the provided delimiter. Returns a list of {@link Record} objects,

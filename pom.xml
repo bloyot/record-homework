@@ -21,8 +21,4 @@
         <module>record-homework-common</module>
     </modules>
 
-    <properties>
-        <java.version>14</java.version>
-    </properties>
-
 </project>

@@ -34,7 +34,7 @@ class RecordHomeworkApiApplicationTests {
 	/**
 	 * Auto wire the bean here so that we can set the records value for testing purposes. In practice, with an actual
 	 * database, you would either mock the database service to return the responses needed for the test, or use an in memory
-	 * database initialized with the mock data for you test.
+	 * database initialized with the mock data for each test.
 	 */
 	@Autowired
 	private RecordController recordController;
@@ -119,6 +119,16 @@ class RecordHomeworkApiApplicationTests {
 			.andExpect(jsonPath("$[1].lastName", is("Kobe")))
 			.andExpect(jsonPath("$[2].lastName", is("Ada")));
 	}
+
+    @Test
+    void getRecordsEmpty() throws Exception {
+        ReflectionTestUtils.setField(recordController, "records", new ArrayList<>());
+        mockMvc.perform(
+            get("/records/name")
+                .queryParam("sortOrder", "desc"))
+            .andExpect(status().isOk())
+            .andExpect(content().string("[]"));
+    }
 
 	@Test
 	void createRecordAsCSV() throws Exception {
