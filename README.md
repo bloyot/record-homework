@@ -1,10 +1,10 @@
-#Overview
+# Overview
 This is a Java project, using the Spring Boot framework, which consists of three modules:
 - `record-homework-api`: this is the restfu api, which exposes endpoints to create and retrieve records 
 - `record-homework-cli`: this is a cli tool which allows joining three input files in different formats, and sorting the output. 
 - `record-homework-common`: this is a library for shared code between the api and cli, primarily the parsing logic, and the core `Record` object
 
-#Build
+# Build
 To build the project, from the root directory run:
 ```shell script
 ./mvnw clean install
@@ -12,11 +12,11 @@ To build the project, from the root directory run:
 
 This will run the tests and build the project, storing the built artifacts in your local m2 repository. 
 
-#Sample data
+# Sample data
 Some sample data for testing is provided in `record-homework-cli/src/test/resources`. These files are also used for the junit tests. 
 
-#Run
-##Cli
+# Run
+## Cli
 The command line interface requires 4 arguments:
 * `--sort-type` how to sort the data, currently one of three options, `gender` which sorts by gender (female -> male) then last name ascending, `birth_date` which sorts by birth date ascending, and `last_name` which sorts by last name descending
 * `--input-csv` the fully qualified path to the input comma separated value file
@@ -90,4 +90,4 @@ The whole test suite can be run from the root directory with `./mvnw test`
 A note on coverage: The vast majority of the logic is in the api and the common modules. The cli modules contains mostly just a wrapper and some cli option parsing. 
 The coverage for the api and common modules are at 80% and 76% respectively, and nearly all the uncovered code is getters/setters.
 The coverage for the cli application is only 10%, but contains virtually no logic that would be a good fit for testing. Although the overall test coverage (by line) is only 50%,
-I feel quite confident that the actual logic is tested quite thoroughly, and most coverage gaps are boilerplate (which is quite common in java). 
+I feel quite confident that the actual logic is tested thoroughly, and most coverage gaps are boilerplate (which is quite common in java). 
