@@ -1,8 +1,8 @@
 # Overview
 This is a Java project, using the Spring Boot framework, which consists of three modules:
-- `record-homework-api`: this is the restfu api, which exposes endpoints to create and retrieve records 
-- `record-homework-cli`: this is a cli tool which allows joining three input files in different formats, and sorting the output. 
-- `record-homework-common`: this is a library for shared code between the api and cli, primarily the parsing logic, and the core `Record` object
+- `record-homework-api` this is the restful api, which exposes endpoints to create and retrieve records 
+- `record-homework-cli` this is a cli tool which allows joining three input files in different formats, and sorting the output. 
+- `record-homework-common` this is a library for shared code between the api and cli, primarily the parsing logic, and the core `Record` object
 
 # Build
 To build the project, from the root directory run:
@@ -53,7 +53,7 @@ The data is the actual record (same as in the files processed by the command lin
 * `GET /records/gender` - returns an array of records, sorted by gender (male -> female). You can provide `sortOrder=desc` as a query param to sort in the opposite order. 
 
 Sample request/response:
-* Request `curl localhost:8080/records/birthdate?sortOrder=asc`
+* Request `curl localhost:8080/records/birthdate`
 * Response
 ```
 [
