@@ -4,6 +4,8 @@ This is a Java project, using the Spring Boot framework, which consists of three
 - `record-homework-cli` this is a cli tool which allows joining three input files in different formats, and sorting the output. 
 - `record-homework-common` this is a library for shared code between the api and cli, primarily the parsing logic, and the core `Record` object
 
+*Note: this project requires java 14 to run.*
+
 # Build
 To build the project, from the root directory run:
 ```shell script
